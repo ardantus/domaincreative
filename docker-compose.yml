@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    command: ["python3", "-m", "http.server", "8080"]
+
+  api:
+    image: strvm/meta-ai-api:latest
+    ports:
+      - "8000:8000"
+
+  backend:
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "8081:8080"
+    depends_on:
+      - api
+    command: ["python3", "server.py"]
